@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Presupuesto Siluetas | Eternity</title>
+<style>
+    :root {
+        --color-verde: #8ec6c5;
+        --color-violeta: #8566aa;
+        --color-azul: #6983aa;
+        --color-fondo: #f4f4f4;
+        --color-texto: #333;
+    }
+
+    body {
+        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        background-color: var(--color-fondo);
+        color: var(--color-texto);
+        margin: 0;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        min-height: 100vh;
+        padding: 20px;
+        box-sizing: border-box;
+    }
+
+    .calc-container {
+        max-width: 360px;
+        width: 100%;
+        padding: 30px;
+        background-color: #ffffff;
+        border-radius: 12px;
+        box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+        text-align: center;
+        border-top: 5px solid var(--color-azul);
+        position: relative;
+    }
+
+    /* Estilo para tu Logo */
+    .logo-marca {
+        width: 80px;
+        height: 80px;
+        margin-bottom: 15px;
+        border-radius: 50%;
+        object-fit: cover;
+    }
+
+    h2 {
+        font-weight: 300;
+        letter-spacing: 2px;
+        text-transform: uppercase;
+        font-size: 1rem;
+        margin: 0 0 20px 0;
+        color: var(--color-azul);
+    }
+
+    .input-group {
+        margin-top: 15px;
+        text-align: left;
+    }
+
+    label {
+        font-size: 11px;
+        font-weight: bold;
+        text-transform: uppercase;
+        letter-spacing: 1px;
+        color: var(--color-azul);
+        display: block;
+        margin-bottom: 5px;
+    }
+
+    input, select {
+        width: 100%;
+        padding: 12px;
+        border: 1px solid #e1e1e1;
+        background-color: #fafafa;
+        font-size: 16px;
+        border-radius: 6px;
+        box-sizing: border-box;
+    }
+
+    #resultado {
+        margin-top: 25px;
+        font-size: 24px;
+        font-weight: bold;
+        background-color: var(--color-fondo);
+        padding: 15px;
+        border-radius: 8px;
+    }
+
+    .promo-msg {
+        color: var(--color-violeta);
+        font-size: 14px;
+        font-weight: bold;
+        margin-top: 10px;
+    }
+
+    .btn-wpp {
+        display: block;
+        margin-top: 25px;
+        padding: 15px;
+        background-color: var(--color-violeta);
+        color: #ffffff;
+        text-decoration: none;
+        text-transform: uppercase;
+        font-size: 12px;
+        font-weight: bold;
+        letter-spacing: 1px;
+        border-radius: 30px;
+        transition: 0.3s;
+    }
+</style>
+</head>
+<body>
+
+<div class="calc-container">
+    <img src="ET RNITY (5).png" alt="Logo Eternity" class="logo-marca">
+    
+    <h2>Tamaño Personalizado</h2>
+    
+    <div class="input-group">
+        <label>Ancho (cm)</label>
+        <input type="number" id="ancho" value="30" oninput="calcular()">
+    </div>
+    
+    <div class="input-group">
+        <label>Alto (cm)</label>
+        <input type="number" id="alto" value="40" oninput="calcular()">
+    </div>
+    
+    <div class="input-group">
+        <label>Cantidad</label>
+        <select id="cantidad" onchange="calcular()">
+            <option value="1">1 Unidad</option>
+            <option value="2">Pack x2 (20% OFF en el 2do)</option>
+        </select>
+    </div>
+
+    <div id="resultado">Total: $15.000</div>
+    <div id="promo-info"></div>
+    
+    <a id="link-wpp" class="btn-wpp" href="#" target="_blank">
+        Encargar por WhatsApp
+    </a>
+</div>
+
+<script>
+function calcular() {
+    const ancho = parseFloat(document.getElementById('ancho').value) || 0;
+    const alto = parseFloat(document.getElementById('alto').value) || 0;
+    const cantidad = parseInt(document.getElementById('cantidad').value);
+    
+    // --- MATEMÁTICA PARA QUE 30x40 DÉ $15.000 ---
+    // (30 * 40) = 1200. Para que dé 15000, multiplicamos por 12.5
+    const factorPrecio = 12.5; 
+    let precioUnitario = (ancho * alto) * factorPrecio;
+    
+    // Redondeo a cientos para limpieza
+    precioUnitario = Math.ceil(precioUnitario / 100) * 100;
+
+    let total;
+    let mensaje = "";
+
+    if (cantidad === 2) {
+        // Precio total = (Unidad 1) + (Unidad 2 con 20% de descuento)
+        // Esto equivale a multiplicar el total de dos unidades por 0.9 (o sea 10% total)
+        // O si preferís un 20% sobre el TOTAL:
+        total = (precioUnitario * 2) * 0.8; 
+        let ahorro = (precioUnitario * 2) - total;
+        mensaje = `<div class="promo-msg">¡Ahorrás $${ahorro.toLocaleString('es-AR')} con el Pack x2!</div>`;
+    } else {
+        total = precioUnitario;
+    }
+
+    document.getElementById('resultado').innerText = `Total: $${total.toLocaleString('es-AR')}`;
+    document.getElementById('promo-info').innerHTML = mensaje;
+
+    const msg = `Hola! Quiero encargar un cuadro personalizado de ${ancho}x${alto}cm (Cantidad: ${cantidad}). El precio estimado es de $${total.toLocaleString('es-AR')}.`;
+    // REEMPLAZÁ EL NÚMERO ABAJO CON TU WHATSAPP (con 549...)
+    document.getElementById('link-wpp').href = `https://wa.me/5492604800578?text=${encodeURIComponent(msg)}`;
+}
+
+window.onload = calcular;
+</script>
+
+</body>
+</html>
