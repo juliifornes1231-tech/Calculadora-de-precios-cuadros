@@ -152,9 +152,9 @@ function calcular() {
     const alto = parseFloat(document.getElementById('alto').value) || 0;
     const cantidad = parseInt(document.getElementById('cantidad').value);
     
-    // --- MATEMÁTICA PARA QUE 30x40 DÉ $15.000 ---
-    // (30 * 40) = 1200. Para que dé 15000, multiplicamos por 12.5
-    const factorPrecio = 12.5; 
+    // --- MATEMÁTICA PARA QUE 30x40 DÉ $30.000 ---
+    // (30 * 40) = 1200. Para que dé 30000, multiplicamos por 25
+    const factorPrecio = 25; 
     let precioUnitario = (ancho * alto) * factorPrecio;
     
     // Redondeo a cientos para limpieza
